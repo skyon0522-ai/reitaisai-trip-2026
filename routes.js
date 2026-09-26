@@ -158,3 +158,138 @@
     host.innerHTML = '<h2 id="maps-heading">Googleマップで経路を見る</h2><div class="notice">経路データを読み込めませんでした。ページを再読み込みしてください。既存の費用比較・行程は引き続き利用できます。</div>';
   }
 }());
+
+/* Dinner candidates: one semantic object drives the view and JSON export. */
+(function addDinnerCandidates() {
+  'use strict';
+  if (document.getElementById('dinner')) return;
+  const dinner = {
+    schema_version: '1.0', date: '2026-10-03', checked_date: '2026-09-27',
+    status: '候補比較・店は未決定・未予約', selected_restaurant_id: null,
+    budget_jpy_per_person: 7000,
+    budget_scope: '料理・飲み物・席料を合わせた希望予算。店の確定コース料金ではありません。',
+    availability: '10/3・3名の空席と当日の営業・提供料理は未確認です。掲載価格は予約時に再確認してください。',
+    integration: '元の交通・宿泊比較は変更せず、この欄で10/3夕食代だけを加算。その他の食費・入場券等は引き続き別。',
+    timing: {
+      mixed: '19:30ごろ開始（宿への到着後。遅れる場合は店へ連絡）',
+      highway: '19:00ごろ開始 → 21:00ごろ終了を目安',
+      rail: '19:30〜20:00開始 → 21:30〜22:00終了を目安'
+    },
+    safety_plan: '車はホテルに置いて徒歩で往復する計画です。翌朝の運転担当はノンアルコールでの参加を基本にします。',
+    candidates: [
+      {
+        id: 'sante', name: 'Deli & Vino Maru-shu Sante', short_name: 'マルシュ サンテ', genre: 'ビストロ・ワイン',
+        fit: '肉料理だけでなく、前菜や煮込みも楽しみたいときの候補。',
+        address: '東京都江戸川区西葛西6-11-1', phone: '03-6808-8186',
+        hours: '掲載ディナー時間 17:00〜23:00／不定休',
+        menu_samples: '合鴨のコンフィー 1,980円、ラムチョップのロースト 2,500円、パテ・ド・カンパーニュ 980円。いずれも掲載税込価格。',
+        order_idea: 'メインを2種類と前菜を3人でシェアし、追加料理・飲み物を予算に合わせる。日替わり肉料理は当日確認。',
+        caution: '席料500円の掲載があります。7,000円の中に席料も含めて考えます。ステーキなど特定の日替わり料理があるとは限りません。',
+        seats: '掲載22席・全席禁煙。3名席は未確保。',
+        url: 'https://tabelog.com/tokyo/A1313/A131305/13305502/',
+        source_url: 'https://tabelog.com/tokyo/A1313/A131305/13305502/dtlmenu/',
+        source_title: '店舗掲載メニュー・営業時間（食べログ）'
+      },
+      {
+        id: 'chelsea', name: 'Chelsea Tokyo', short_name: 'チェルシー トウキョウ', genre: 'イタリアン・ワイン',
+        fit: '肉の煮込みとパスタを組み合わせて楽しみたいときの候補。',
+        address: '東京都江戸川区西葛西5-1-9 5F', phone: '03-6822-0372',
+        hours: '掲載 17:00〜23:00（料理L.O.22:00、飲み物22:30）／火曜休',
+        menu_samples: '牛ホホ肉の赤ワイン煮込み、粗びきミンチのボロネーゼを店舗が紹介しています。おまかせコースは6,500円の掲載。',
+        order_idea: '飲み物込み7,000円を目指すなら単品注文を軸に、煮込み・パスタ・前菜の量を相談する。',
+        caution: 'カウンター7席のみ。3人が横並びで座れるか確認が必要です。6,500円コースの飲み物・追加料金込み総額は未確認のため、7,000円に収まるとは扱いません。',
+        seats: '3名横並びの空席は未確認。テーブル席のある店としては掲載しません。',
+        url: 'https://tabelog.com/tokyo/A1313/A131305/13314760/',
+        source_url: 'https://tabelog.com/tokyo/A1313/A131305/13314760/',
+        source_title: '店舗案内・料理紹介・席数（食べログ）'
+      },
+      {
+        id: 'amigo', name: 'EL-AMIGO 西葛西店', short_name: 'エル・アミーゴ', genre: 'ステーキ・メキシカン',
+        fit: '前菜よりも、ヒレステーキそのものに予算を使いたいときの候補。',
+        address: '東京都江戸川区西葛西6-14 メトロセンター1番街', phone: '03-3675-2340',
+        hours: '公式掲載 17:00〜22:30（L.O.21:45）／火曜・第2第4月曜休',
+        menu_samples: '公式ページ掲載の特上ヒレステーキは150g 4,290円／220g 5,990円（税込）。価格改定の可能性があるため、来店時価格は要確認。',
+        order_idea: '150gのヒレを中心に、サイドをシェアして飲み物を追加。220gを選ぶとサイドと飲み物に使える残額が小さくなる。',
+        caution: '掲載価格と当日価格は同一と保証されません。クーポン利用を前提にせず、7,000円前後で頼める内容を確認します。',
+        seats: 'テーブル席のある店舗。10/3の3名席は未確保。',
+        url: 'https://amigo1979nishikasai.com/',
+        source_url: 'https://amigo1979nishikasai.com/',
+        source_title: '西葛西店公式・メニュー／営業時間'
+      },
+      {
+        id: 'taisho', name: '炭火焼肉 大将', short_name: '大将（西葛西）', genre: '焼肉・焼鳥',
+        fit: '焼きながら、タン・カルビ・ハラミを食べ比べたいときの候補。',
+        address: '東京都江戸川区西葛西3-14-1', phone: '03-3688-8066',
+        hours: '公式掲載 土曜11:00〜24:00（L.O.23:00）／早仕舞いの場合あり',
+        menu_samples: '上タン塩 2,480円、上カルビ 2,680円、特上ハラミ 2,880円。いずれも掲載税込価格。',
+        order_idea: '肉を数種類シェアし、追加肉・ご飯物・飲み物を3人の合計予算に合わせて注文する。',
+        caution: '以前挙げた5,500円コースは現行条件を確認できていないため、確定プランとして載せず、単品注文で比較しています。',
+        seats: '公式案内は店内禁煙。店外に喫煙スペースあり。3名席は未確保。',
+        url: 'https://yakiniku-taishou.owst.jp/',
+        source_url: 'https://yakiniku-taishou.owst.jp/',
+        source_title: '公式メニュー・営業時間・席の案内'
+      }
+    ]
+  };
+  original.dinner = structuredClone(dinner);
+  data.dinner = structuredClone(dinner);
+  const host = document.createElement('section');
+  host.id = 'dinner';
+  host.setAttribute('aria-labelledby', 'dinner-heading');
+  (document.getElementById('parking') || document.getElementById('time')).before(host);
+  const nav = document.createElement('a');
+  nav.href = '#dinner'; nav.textContent = '10/3の夕食';
+  const navBefore = document.querySelector('header nav a[href="#parking"],header nav a[href="#time"]');
+  navBefore.before(nav);
+  const css = document.createElement('style');
+  css.textContent = `
+#dinner{scroll-margin-top:20px}#dinner h3{font-size:20px;overflow-wrap:anywhere}.dinner-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.dinner-card{padding:22px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius)}.dinner-card p{font-size:14px}.dinner-card details{margin:14px 0}.dinner-card summary{font-size:14px;padding:10px 12px}.dinner-card .detailbody{padding:0 12px 12px}.dinner-card .dinner-address{font-size:13px;color:var(--muted)}.dinner-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.dinner-links a{font-size:13px;padding:8px 11px;min-height:42px;border:1px solid var(--line);border-radius:8px;text-decoration:none;display:inline-flex;align-items:center}.dinner-links a:first-child{background:var(--soft)}.dinner-source{font-size:12px!important;color:var(--muted)}.dinner-budget{margin:18px 0;background:var(--paper);padding:18px;border:1px solid var(--line);border-radius:12px}.dinner-budget label{font-size:14px;display:block}.dinner-budget input{width:160px;font:inherit;padding:8px;border:1px solid var(--line);border-radius:8px;margin:6px 8px 6px 0}.dinner-totals{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:12px}.dinner-total{padding:12px;background:var(--soft);border-radius:10px}.dinner-total strong,.dinner-total small{display:block}.dinner-total strong{font-size:23px}.dinner-total small{font-size:12px;color:var(--muted)}.dinner-timing{padding-left:20px;font-size:14px}.dinner-timing li{margin:8px 0}
+@media(max-width:760px){.dinner-grid,.dinner-totals{grid-template-columns:1fr}.dinner-card{padding:18px}.dinner-total{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px}.dinner-total small{grid-column:1/-1}.dinner-links a{flex-grow:1;justify-content:center}}
+@media print{.dinner-grid{grid-template-columns:1fr 1fr}.dinner-card{break-inside:avoid}.dinner-budget input{border:0}.dinner-links{display:none}}
+`;
+  document.head.append(css);
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const link = (url, text) => `<a href="${escape(url)}" target="_blank" rel="noopener noreferrer">${escape(text)}</a>`;
+  const hotel = data.assumptions.hotel_name.replace(/（.*?）/g, '') + ' ' + data.assumptions.hotel_location;
+  const walk = (from,to) => 'https://www.google.com/maps/dir/?' + new URLSearchParams({api:'1',origin:from,destination:to,travelmode:'walking'});
+  host.innerHTML = `
+<h2 id="dinner-heading">10/3（土）の夕食候補</h2>
+<p><strong>肉料理を楽しむ4店。焼肉に限定せず、1人7,000円前後を目指します。</strong><br><span class="note">${escape(dinner.status)}。${escape(dinner.budget_scope)}</span></p>
+<div class="notice">${escape(dinner.availability)}</div>
+<div class="dinner-grid">${dinner.candidates.map(r => {
+ const query=r.name+' '+r.address;
+ return `<article class="dinner-card" id="dinner-${escape(r.id)}"><span class="pill">${escape(r.genre)}・未予約</span><h3>${escape(r.name)}</h3><p>${escape(r.fit)}</p><p class="dinner-address">${escape(r.address)}<br>${escape(r.hours)}</p><p><strong>注文の組み方（提案）</strong><br>${escape(r.order_idea)}</p><details><summary>料理の掲載価格・予算と席の注意</summary><div class="detailbody"><p>${escape(r.menu_samples)}</p><p><strong>注意：</strong>${escape(r.caution)}</p><p>${escape(r.seats)}</p></div></details><div class="dinner-links">${link(r.url,'店舗・予約案内 ↗')}${link(walk(hotel,query),'宿 → 店（徒歩） ↗')}${link(walk(query,hotel),'店 → 宿（徒歩） ↗')}<a href="tel:${escape(r.phone)}">電話 ${escape(r.phone)}</a></div><p class="dinner-source">確認元：${link(r.source_url,r.source_title)}／${escape(dinner.checked_date)}参照。掲載内容と当日の提供内容は異なる場合があります。</p></article>`;
+ }).join('')}</div>
+<div class="dinner-budget"><h3>10/3の夕食代を加えると</h3><p class="note">${escape(dinner.integration)}</p><label for="dinner-budget-input">夕食の予算／1人（円）</label><input type="number" id="dinner-budget-input" min="0" step="100" inputmode="numeric"><span id="dinner-group-total"></span><p id="dinner-budget-error" class="error" role="status"></p><div id="dinner-totals" class="dinner-totals" aria-live="polite"></div><p class="note">宿代・駐車場代などは引き続き仮予算です。車案は、未入力の駐車サービス料が別途必要です。数値変更はこの画面だけで、予約・外部送信は行いません。</p></div>
+<details><summary>移動プラン別の夕食開始時間</summary><div class="detailbody"><ul class="dinner-timing">${data.plans.map(p=>`<li><strong>${escape(p.name)}</strong>：${escape(dinner.timing[p.id])}</li>`).join('')}</ul><p class="note">開始時刻は提案で、予約時刻ではありません。移動の遅れ・チェックイン・徒歩時間を見込んで決めてください。</p><p>${escape(dinner.safety_plan)}</p></div></details>
+<p class="note">夕食候補・予算・確認元は「現在の計算条件をJSONで保存」にも含まれます。</p>
+`;
+  function renderDinnerTotals() {
+    const meal = data.dinner.budget_jpy_per_person;
+    const input = document.getElementById('dinner-budget-input');
+    if (document.activeElement !== input) input.value = String(meal);
+    document.getElementById('dinner-group-total').textContent = data.trip.adults + '人で ' + yen(meal*data.trip.adults,1);
+    document.getElementById('dinner-totals').innerHTML = data.plans.map(p => {
+      const total = calc(p).total + meal;
+      const pending = p.mode === 'car' && data.assumptions.parking_service_fee_jpy_per_vehicle == null;
+      return `<div class="dinner-total"><span>${escape(p.name)}</span><strong>約${yen(total)}／人</strong><small>交通・宿泊＋10/3夕食${pending?'／未確定の駐車サービス料は別':''}</small></div>`;
+    }).join('');
+  }
+  document.getElementById('dinner-budget-input').addEventListener('input',event=>{
+    const value = Number(event.target.value);
+    if (event.target.value === '' || !Number.isFinite(value) || value < 0) {
+      document.getElementById('dinner-budget-error').textContent='0以上の金額を入力してください。'; return;
+    }
+    document.getElementById('dinner-budget-error').textContent='';
+    data.dinner.budget_jpy_per_person=value;renderDinnerTotals();
+  });
+  // Reuse the existing calculator, rather than duplicating its cost logic.
+  const baseRender = render;
+  render = function renderWithDinner() {baseRender();renderDinnerTotals();};
+  document.getElementById('reset').addEventListener('click',()=>{
+    document.getElementById('dinner-budget-input').value=String(data.dinner.budget_jpy_per_person);
+    document.getElementById('dinner-budget-error').textContent='';
+  });
+  renderDinnerTotals();
+  if (location.hash === '#dinner') host.scrollIntoView({block:'start'});
+}());
