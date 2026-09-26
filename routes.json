@@ -1,11 +1,11 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "updated_date": "2026-09-27",
   "origin_id": "niigata",
   "default_plan_id": "highway",
-  "default_stage_id": "outbound",
+  "default_stage_id": "venue",
   "source_url": "https://developers.google.com/maps/documentation/urls/get-started",
-  "status": "計画した区間の検索リンク。道路・列車・駐車場の予約や経路の固定ではありません。",
+  "status": "計画した区間の検索リンク。駐車場は未予約。道路・列車・空き・所要時間を保証するものではありません。予備駐車場の経路はページ内の駐車計画カードから開けます。",
   "places": {
     "niigata": {"label": "新潟駅", "query": "新潟駅 新潟県新潟市中央区"},
     "chuo": {"label": "新潟中央IC", "query": "新潟中央インターチェンジ 新潟県新潟市"},
@@ -13,6 +13,7 @@
     "tsukiyono": {"label": "月夜野IC", "query": "関越自動車道 月夜野インターチェンジ 群馬県みなかみ町"},
     "nerima": {"label": "練馬IC", "query": "関越自動車道 練馬インターチェンジ 東京都練馬区"},
     "hotel": {"label": "宿（西葛西）", "source": "hotel"},
+    "parking": {"label": "有明セントラルタワー1F・予約駐車場", "query": "Dパーキング有明セントラルタワー 東京都江東区有明3丁目7-18"},
     "venue": {"label": "ビッグサイト東ホール", "source": "venue"},
     "tokyo": {"label": "東京駅", "query": "東京駅 東京都千代田区"},
     "otemachi": {"label": "大手町駅", "query": "大手町駅 東京メトロ東西線 東京都千代田区"},
@@ -35,10 +36,12 @@
     "station_chuo": {"from": "niigata", "to": "chuo", "mode": "driving", "road": "local", "note": "新潟駅で集合して出発する想定です。駅での乗降場所は3人で決め、停車可能な場所を利用してください。"},
     "expressway_out": {"from": "chuo", "to": "nerima", "mode": "driving", "road": "expressway", "note": "北陸道・関越道経由を使う計画です。Googleマップで道路名と出入口を確認してください。料金比較は新潟中央IC〜練馬ICで計算しています。"},
     "nerima_hotel": {"from": "nerima", "to": "hotel", "mode": "driving", "road": "local", "note": "基本予算では練馬ICから先は一般道です。首都高・外環を使う候補を選ぶ場合は、別途料金が必要です。"},
-    "hotel_venue_car": {"from": "hotel", "to": "venue", "mode": "driving", "road": "local", "note": "宿を08:00ごろ出発し09:00ごろの到着を目指す計画です。目的地は会場の代表地点です。利用する駐車場が決まったら、目的地を実際の駐車場入口に変更してください。"},
-    "venue_nerima": {"from": "venue", "to": "nerima", "mode": "driving", "road": "local", "note": "会場を16:00ごろ出発する計画です。都内の一般道は渋滞で時間が変わります。駐車場からの出庫待ちも別に見込んでください。"},
+    "hotel_parking_car": {"from": "hotel", "to": "parking", "mode": "driving", "road": "local", "note": "07:45〜08:00に宿を出発し、08:30〜08:45の入庫を目指す計画です。本命はDパーキング有明セントラルタワー1F月極スペース。未予約なので、予約成立後に利用してください。Googleマップは施設の代表地点です。予約ページの入口写真を確認し、時間貸しではなく月極入口へ進んでください。"},
+    "parking_venue_walk": {"from": "parking", "to": "venue", "mode": "walking", "note": "予約区画へ駐車してから東ホールまで徒歩。09:00〜09:15ごろ会場周辺に着く計画で、歩行・入口確認に余裕を持たせています。実際の一般参加者入口・待機列は主催者の当日案内に従ってください。予約暗証番号は公開ページに記載しないでください。"},
+    "venue_parking_walk": {"from": "venue", "to": "parking", "mode": "walking", "note": "15:45〜16:00ごろに会場を出て、徒歩で予約駐車場へ戻ります。車は会場公式駐車場ではなく有明セントラルタワー1Fです。再入庫不可なので、荷物を積み込んで帰る準備を済ませてから出庫してください。"},
+    "parking_nerima": {"from": "parking", "to": "nerima", "mode": "driving", "road": "local", "note": "16:15〜16:30ごろに予約駐車場を出庫し、一般道で練馬ICへ向かう計画です。予約していても入出庫待ち・周辺渋滞は発生し得ます。首都高等を利用する場合は、基本予算と別に料金を確認してください。"},
     "expressway_back": {"from": "nerima", "to": "chuo", "mode": "driving", "road": "expressway", "note": "帰路は関越道・北陸道経由で新潟中央ICへ。運転交代・休憩は地図の所要時間とは別に確保してください。"},
-    "chuo_station": {"from": "chuo", "to": "niigata", "mode": "driving", "road": "local", "note": "新潟中央ICから一般道で新潟駅に戻る計画です。21:30〜23:00の帰着は目安で、渋滞や休憩で遅れます。"},
+    "chuo_station": {"from": "chuo", "to": "niigata", "mode": "driving", "road": "local", "note": "新潟中央ICから一般道で新潟駅に戻る計画です。徒歩・出庫の余裕を加え、新潟駅帰着の目安を22:00〜23:30に変更しました。渋滞や休憩でさらに遅れる可能性があります。"},
     "rail_out": {"from": "niigata", "to": "tokyo", "mode": "transit", "line": "上越新幹線", "note": "計画は10/3 新潟16:22発・とき76号→東京18:20着。Googleマップはこの列車を自動指定しません。検索日を10/3に変更し、新幹線の候補とJR時刻表を確認してください。"},
     "tokyo_otemachi": {"from": "tokyo", "to": "otemachi", "mode": "walking", "note": "東京駅から大手町駅の東西線乗り場へ徒歩移動する計画です。駅構内の出口・改札と東西線の案内表示を確認してください。"},
     "otemachi_nishikasai": {"from": "otemachi", "to": "nishikasai", "mode": "transit", "line": "東京メトロ東西線", "note": "東西線で西葛西へ向かう計画です。Googleマップは検索した時刻の候補を表示するため、10/3夕方の条件に変更して接続を確認してください。"},
@@ -54,8 +57,8 @@
     "rail_back": {"from": "tokyo", "to": "niigata", "mode": "transit", "line": "上越新幹線", "note": "計画は10/4 東京17:32発・とき335号→新潟19:31着。Googleマップはこの列車を自動指定しません。座席・割引席は未確保です。"}
   },
   "plan_stages": {
-    "mixed": {"outbound": ["mixed_1", "mixed_2", "mixed_3"], "venue": ["hotel_venue_car"], "return": ["venue_nerima", "expressway_back", "chuo_station"]},
-    "highway": {"outbound": ["station_chuo", "expressway_out", "nerima_hotel"], "venue": ["hotel_venue_car"], "return": ["venue_nerima", "expressway_back", "chuo_station"]},
+    "mixed": {"outbound": ["mixed_1", "mixed_2", "mixed_3"], "venue": ["hotel_parking_car", "parking_venue_walk"], "return": ["venue_parking_walk", "parking_nerima", "expressway_back", "chuo_station"]},
+    "highway": {"outbound": ["station_chuo", "expressway_out", "nerima_hotel"], "venue": ["hotel_parking_car", "parking_venue_walk"], "return": ["venue_parking_walk", "parking_nerima", "expressway_back", "chuo_station"]},
     "rail": {"outbound": ["rail_out", "tokyo_otemachi", "otemachi_nishikasai", "nishikasai_hotel"], "venue": ["hotel_nishikasai", "nishikasai_nihombashi", "nihombashi_shimbashi", "shimbashi_bigsight", "station_venue_walk"], "return": ["venue_kokusai", "kokusai_shinkiba", "shinkiba_tokyo", "rail_back"]}
   }
 }
