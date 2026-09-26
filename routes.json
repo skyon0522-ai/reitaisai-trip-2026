@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "updated_date": "2026-09-27",
+  "origin_id": "niigata",
+  "default_plan_id": "highway",
+  "default_stage_id": "outbound",
+  "source_url": "https://developers.google.com/maps/documentation/urls/get-started",
+  "status": "計画した区間の検索リンク。道路・列車・駐車場の予約や経路の固定ではありません。",
+  "places": {
+    "niigata": {"label": "新潟駅", "query": "新潟駅 新潟県新潟市中央区"},
+    "chuo": {"label": "新潟中央IC", "query": "新潟中央インターチェンジ 新潟県新潟市"},
+    "yuzawa": {"label": "湯沢IC", "query": "関越自動車道 湯沢インターチェンジ 新潟県湯沢町"},
+    "tsukiyono": {"label": "月夜野IC", "query": "関越自動車道 月夜野インターチェンジ 群馬県みなかみ町"},
+    "nerima": {"label": "練馬IC", "query": "関越自動車道 練馬インターチェンジ 東京都練馬区"},
+    "hotel": {"label": "宿（西葛西）", "source": "hotel"},
+    "venue": {"label": "ビッグサイト東ホール", "source": "venue"},
+    "tokyo": {"label": "東京駅", "query": "東京駅 東京都千代田区"},
+    "otemachi": {"label": "大手町駅", "query": "大手町駅 東京メトロ東西線 東京都千代田区"},
+    "nishikasai": {"label": "西葛西駅", "query": "西葛西駅 東京都江戸川区"},
+    "nihombashi": {"label": "日本橋駅", "query": "日本橋駅 東京都中央区"},
+    "shimbashi": {"label": "新橋駅", "query": "新橋駅 東京都港区"},
+    "bigsight_station": {"label": "東京ビッグサイト駅", "query": "東京ビッグサイト駅 ゆりかもめ 東京都江東区"},
+    "kokusai": {"label": "国際展示場駅", "query": "国際展示場駅 りんかい線 東京都江東区"},
+    "shinkiba": {"label": "新木場駅", "query": "新木場駅 東京都江東区"}
+  },
+  "stages": {
+    "outbound": {"label": "10/3 往路", "date": "2026-10-03"},
+    "venue": {"label": "10/4 宿 → 会場", "date": "2026-10-04"},
+    "return": {"label": "10/4 復路", "date": "2026-10-04"}
+  },
+  "legs": {
+    "mixed_1": {"from": "niigata", "to": "yuzawa", "mode": "driving", "road": "local", "note": "国道8号・17号方面の一般道を使う計画です。Googleマップの候補が有料道路を避けているか確認してください。"},
+    "mixed_2": {"from": "yuzawa", "to": "tsukiyono", "mode": "driving", "road": "expressway", "note": "この区間だけ関越道を使って山越えします。高速・有料道路の回避設定をOFFにして、関越道の候補を選んでください。"},
+    "mixed_3": {"from": "tsukiyono", "to": "hotel", "mode": "driving", "road": "local", "note": "月夜野ICを降りてからは一般道です。途中で高速や首都高に入り直さない候補を確認してください。"},
+    "station_chuo": {"from": "niigata", "to": "chuo", "mode": "driving", "road": "local", "note": "新潟駅で集合して出発する想定です。駅での乗降場所は3人で決め、停車可能な場所を利用してください。"},
+    "expressway_out": {"from": "chuo", "to": "nerima", "mode": "driving", "road": "expressway", "note": "北陸道・関越道経由を使う計画です。Googleマップで道路名と出入口を確認してください。料金比較は新潟中央IC〜練馬ICで計算しています。"},
+    "nerima_hotel": {"from": "nerima", "to": "hotel", "mode": "driving", "road": "local", "note": "基本予算では練馬ICから先は一般道です。首都高・外環を使う候補を選ぶ場合は、別途料金が必要です。"},
+    "hotel_venue_car": {"from": "hotel", "to": "venue", "mode": "driving", "road": "local", "note": "宿を08:00ごろ出発し09:00ごろの到着を目指す計画です。目的地は会場の代表地点です。利用する駐車場が決まったら、目的地を実際の駐車場入口に変更してください。"},
+    "venue_nerima": {"from": "venue", "to": "nerima", "mode": "driving", "road": "local", "note": "会場を16:00ごろ出発する計画です。都内の一般道は渋滞で時間が変わります。駐車場からの出庫待ちも別に見込んでください。"},
+    "expressway_back": {"from": "nerima", "to": "chuo", "mode": "driving", "road": "expressway", "note": "帰路は関越道・北陸道経由で新潟中央ICへ。運転交代・休憩は地図の所要時間とは別に確保してください。"},
+    "chuo_station": {"from": "chuo", "to": "niigata", "mode": "driving", "road": "local", "note": "新潟中央ICから一般道で新潟駅に戻る計画です。21:30〜23:00の帰着は目安で、渋滞や休憩で遅れます。"},
+    "rail_out": {"from": "niigata", "to": "tokyo", "mode": "transit", "line": "上越新幹線", "note": "計画は10/3 新潟16:22発・とき76号→東京18:20着。Googleマップはこの列車を自動指定しません。検索日を10/3に変更し、新幹線の候補とJR時刻表を確認してください。"},
+    "tokyo_otemachi": {"from": "tokyo", "to": "otemachi", "mode": "walking", "note": "東京駅から大手町駅の東西線乗り場へ徒歩移動する計画です。駅構内の出口・改札と東西線の案内表示を確認してください。"},
+    "otemachi_nishikasai": {"from": "otemachi", "to": "nishikasai", "mode": "transit", "line": "東京メトロ東西線", "note": "東西線で西葛西へ向かう計画です。Googleマップは検索した時刻の候補を表示するため、10/3夕方の条件に変更して接続を確認してください。"},
+    "nishikasai_hotel": {"from": "nishikasai", "to": "hotel", "mode": "walking", "note": "西葛西駅からホテルへ徒歩移動。宿の販売価格と空室は引き続き未確認です。"},
+    "hotel_nishikasai": {"from": "hotel", "to": "nishikasai", "mode": "walking", "note": "10/4は07:45ごろにホテルを出発する計画です。チェックアウトと荷物整理を済ませてから駅へ向かいます。"},
+    "nishikasai_nihombashi": {"from": "nishikasai", "to": "nihombashi", "mode": "transit", "line": "東京メトロ東西線", "note": "東西線で日本橋へ。検索日を10/4朝に変更してください。"},
+    "nihombashi_shimbashi": {"from": "nihombashi", "to": "shimbashi", "mode": "transit", "line": "東京メトロ銀座線", "note": "銀座線で新橋へ向かう計画です。Googleマップが別の路線を提案する場合もあるため、路線名と料金を確認してください。"},
+    "shimbashi_bigsight": {"from": "shimbashi", "to": "bigsight_station", "mode": "transit", "line": "ゆりかもめ", "note": "新橋でゆりかもめに乗り換えて東京ビッグサイト駅へ。改札間の徒歩移動を含めて接続を確認してください。"},
+    "station_venue_walk": {"from": "bigsight_station", "to": "venue", "mode": "walking", "note": "東京ビッグサイト駅から東ホールへ徒歩移動。一般参加者の入口と待機列は主催者の当日案内に従ってください。"},
+    "venue_kokusai": {"from": "venue", "to": "kokusai", "mode": "walking", "note": "15:45〜16:00ごろに会場を出る計画です。帰路はゆりかもめ駅ではなく、りんかい線の国際展示場駅へ向かいます。"},
+    "kokusai_shinkiba": {"from": "kokusai", "to": "shinkiba", "mode": "transit", "line": "りんかい線", "note": "りんかい線で新木場へ。退場混雑と駅の入場待ちは地図の所要時間と別に考えてください。"},
+    "shinkiba_tokyo": {"from": "shinkiba", "to": "tokyo", "mode": "transit", "line": "JR京葉線", "note": "JR京葉線で東京駅へ向かう計画です。京葉線ホームから新幹線改札までの徒歩移動を見込み、17:00ごろの新幹線改札到着を目標にします。"},
+    "rail_back": {"from": "tokyo", "to": "niigata", "mode": "transit", "line": "上越新幹線", "note": "計画は10/4 東京17:32発・とき335号→新潟19:31着。Googleマップはこの列車を自動指定しません。座席・割引席は未確保です。"}
+  },
+  "plan_stages": {
+    "mixed": {"outbound": ["mixed_1", "mixed_2", "mixed_3"], "venue": ["hotel_venue_car"], "return": ["venue_nerima", "expressway_back", "chuo_station"]},
+    "highway": {"outbound": ["station_chuo", "expressway_out", "nerima_hotel"], "venue": ["hotel_venue_car"], "return": ["venue_nerima", "expressway_back", "chuo_station"]},
+    "rail": {"outbound": ["rail_out", "tokyo_otemachi", "otemachi_nishikasai", "nishikasai_hotel"], "venue": ["hotel_nishikasai", "nishikasai_nihombashi", "nihombashi_shimbashi", "shimbashi_bigsight", "station_venue_walk"], "return": ["venue_kokusai", "kokusai_shinkiba", "shinkiba_tokyo", "rail_back"]}
+  }
+}
