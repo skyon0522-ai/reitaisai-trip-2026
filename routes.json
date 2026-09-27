@@ -1,11 +1,11 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "updated_date": "2026-09-27",
   "origin_id": "niigata",
   "default_plan_id": "rail",
   "default_stage_id": "outbound",
   "source_url": "https://developers.google.com/maps/documentation/urls/get-started",
-  "status": "新幹線案を選択済み。10/3の新潟駅出発は任意だが遅くとも16:22まで。Googleマップは便を固定しないため、実際に選ぶ便は購入時に確認してください。車ルートは参考資料です。",
+  "status": "新幹線案を選択済み。往路は10/3新潟駅16:22まで、復路は10/4東京駅17:32までに出発。どちらもそれ以前の便は選択可。Googleマップは便を固定しません。車ルートは参考資料です。",
   "places": {
     "niigata": {
       "label": "新潟駅",
@@ -253,7 +253,7 @@
       "to": "niigata",
       "mode": "transit",
       "line": "上越新幹線",
-      "note": "計画は10/4 東京17:32発・とき335号→新潟19:31着。Googleマップはこの列車を自動指定しません。座席・割引席は未確保です。"
+      "note": "10/4の東京駅出発時刻は任意です。ただし現在の旅程では遅くとも17:32までに出発します。17:32発「とき335号」→新潟19:31着は固定便ではなく帰路の最終ボーダーで、より早い便を選んで構いません。Googleマップは列車を固定しないため、旅行日を10/4に設定して候補を確認してください。"
     }
   },
   "plan_stages": {
@@ -318,6 +318,10 @@
     "outbound_departure_time": "任意",
     "outbound_latest_departure": "16:22",
     "dinner_budget_jpy_per_person": 7000,
-    "dinner_budget_status": "仮置き"
+    "dinner_budget_status": "仮置き",
+    "return_departure_time": "任意",
+    "return_latest_departure": "17:32",
+    "return_latest_arrival_niigata": "19:31",
+    "return_rule_status": "17:32発とき335号を固定便ではなく帰路の最終ボーダーとして扱う。"
   }
 }
