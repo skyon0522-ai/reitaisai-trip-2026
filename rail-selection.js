@@ -98,29 +98,29 @@
     const meal = data.dinner ? data.dinner.budget_jpy_per_person : 0;
     const cost = calc(p);
     const total = cost.total + meal;
-    const regularTotal = 2*a.shinkansen_regular_one_way_jpy + a.local_rail_budget_jpy_per_person + a.hotel_room_total_jpy/n + meal;
     document.title = data.title;
     document.querySelector('header h1').innerHTML = '新潟駅発・秋季例大祭<br>新幹線で行く1泊2日';
     document.querySelector('header .intro').innerHTML = '<strong>移動手段は新幹線に決定。往路・復路とも時刻は任意ですが、10/3は新潟駅を16:22まで、10/4は東京駅を17:32までに出発します。</strong>どちらも早い便を選んで構いません。都内は電車と徒歩で移動します。';
     const notice = document.querySelector('header .notice');
     notice.innerHTML = '<strong>新幹線案：選択済み／予約状況：未確認</strong><br><span id="hotelwarning"></span>';
     $('hotelwarning').textContent = '宿は比較用候補・1室'+yen(a.hotel_room_total_jpy,1)+'の仮予算です。乗車券・宿・夕食店の予約成立は確認できていません。この更新で予約・購入・取消は行っていません。';
-    summary.innerHTML = `<h2 id="selected-heading">決定したプラン：新幹線</h2><div class="selected-grid"><div class="pane"><span class="pill">移動手段は選択済み</span><h3>交通・1泊・10/3夕食の予算</h3><div class="selected-price">約${yen(total)}<small>／人</small></div><p class="note">${n}人合計 約${yen(total*n)}。往復ともトクだ値1が取れた場合。</p><ul class="selected-costs"><li><span>新幹線往復（割引想定）</span><strong>${yen(cost.train,1)}</strong></li><li><span>都内交通（仮予算）</span><strong>${yen(cost.local,1)}</strong></li><li><span>宿泊（仮予算・${n}人割り）</span><strong>${yen(cost.hotel,1)}</strong></li><li><span>10/3夕食（仮置き）</span><strong>${yen(meal,1)}</strong></li></ul><p>通常期eチケットの参考価格なら<strong>約${yen(regularTotal)}／人</strong>です。</p><p class="selected-fare-note">割引席・選んだ列車での適用は未確認です。通常価格は通常期の価格例で、購入日の確定総額ではありません。<a href="${e(data.sources.find(s=>s.id==='rail_fare').url)}" target="_blank" rel="noopener noreferrer">えきねっとの価格例</a></p><p class="note">入場券・その他の食費・買い物・佐渡航路・新潟駅までの個別移動は別。駐車場代は新幹線案に含めず、追加請求の前提にもしていません。</p></div><div class="pane"><h3>次に確定すること</h3><ol class="selected-todo"><li>10/3は16:22までに新潟駅を出る便、10/4は17:32までに東京駅を出る便から選び、3人分の座席・支払総額を確認する。</li><li>10/3の宿を大人3人・1泊で確保する。現在の宿は候補のまま。</li><li>10/3の夕食店を決める。${yen(meal,1)}／人は比較用の仮置きで、実際の上限・注文額は店を決める際に調整する。</li></ol><div class="selected-status"><span class="pill">駐車予約は今回不要</span><p class="note">宿・会場付近とも車を停める計画から外しました。外部で行った予約の有無は確認しておらず、取消手続きも行っていません。</p></div><p><a href="#detail">行程を見る</a> ／ <a href="#dinner">夕食候補を見る</a></p></div></div>`;
+    summary.innerHTML = `<h2 id="selected-heading">決定したプラン：新幹線</h2><div class="selected-grid"><div class="pane"><span class="pill">移動手段は選択済み</span><h3>交通・1泊・10/3夕食の予算</h3><div class="selected-price">約${yen(total)}<small>／人</small></div><p class="note">${n}人合計 約${yen(total*n)}。通常期eチケットの参考額で仮計算。</p><ul class="selected-costs"><li><span>新幹線往復（通常期の参考額）</span><strong>${yen(cost.train,1)}</strong></li><li><span>都内交通（仮予算）</span><strong>${yen(cost.local,1)}</strong></li><li><span>宿泊（仮予算・${n}人割り）</span><strong>${yen(cost.hotel,1)}</strong></li><li><span>10/3夕食（仮置き）</span><strong>${yen(meal,1)}</strong></li></ul><p class="selected-fare-note">トクだ値1は2026年9月30日乗車分で終了するため、今回の計算には使いません。片道10,780円は通常期の参考額で、10/3・10/4の実売額・座席は未確認です。<a href="${e(data.sources.find(s=>s.id==='rail_fare').url)}" target="_blank" rel="noopener noreferrer">えきねっとの価格例</a> ／ <a href="${e(data.sources.find(s=>s.id==='rail_discount_end').url)}" target="_blank" rel="noopener noreferrer">割引商品の終了案内</a></p><p class="note">入場券・その他の食費・買い物・佐渡航路・新潟駅までの個別移動は別。駐車場代は新幹線案に含めず、追加請求の前提にもしていません。</p></div><div class="pane"><h3>次に確定すること</h3><ol class="selected-todo"><li>10/3は16:22までに新潟駅を出る便、10/4は17:32までに東京駅を出る便から選び、3人分の座席・支払総額を確認する。</li><li>10/3の宿を大人3人・1泊で確保する。現在の宿は候補のまま。</li><li>10/3の夕食店を決める。${yen(meal,1)}／人は比較用の仮置きで、実際の上限・注文額は店を決める際に調整する。</li></ol><div class="selected-status"><span class="pill">駐車予約は今回不要</span><p class="note">宿・会場付近とも車を停める計画から外しました。外部で行った予約の有無は確認しておらず、取消手続きも行っていません。</p></div><p><a href="#detail">行程を見る</a> ／ <a href="#dinner">夕食候補を見る</a></p></div></div>`;
     document.querySelector('#detail h2').textContent = '新幹線プランの行程（時刻は購入前の候補）';
-    $('itineraries').innerHTML = `<p class="note"><strong>往路・復路とも出発時刻は任意です。</strong>10/3は遅くとも16:22までに新潟駅を出発、10/4は遅くとも17:32までに東京駅を出発します。16:22発「とき76号」と17:32発「とき335号」は固定便ではなく、それぞれのボーダーラインです。より早い便を選んで構いません。購入時に運転日・時刻・乗り継ぎ・座席を確認してください。</p><div class="pane steps">${p.schedule.map(s=>`<div class="step"><time>${e(s.date.slice(5).replace('-','/'))}<br>${e(s.time)}</time><div>${e(s.action)}<small>${s.source_id?(s.source_id.startsWith('train_')?'以前の時刻候補・予約未確認 · ':e(s.status)+' · ')+sourceLink(s.source_id):'計画上の目安'}</small></div></div>`).join('')}</div>`;
+    $('itineraries').innerHTML = `<p class="note"><strong>往路・復路とも出発時刻は任意です。</strong>10/3は遅くとも16:22までに新潟駅を出発、10/4は遅くとも17:32までに東京駅を出発します。16:22発「とき76号」と17:32発「とき335号」は固定便ではなく、それぞれのボーダーラインです。より早い便を選んで構いません。購入時に運転日・時刻・乗り継ぎ・座席を確認してください。</p><div class="pane steps">${p.schedule.map(s=>`<div class="step"><time>${e(s.date.slice(5).replace('-','/'))}<br>${e(s.time)}</time><div>${e(s.action)}<small>${s.source_id?(s.source_id.startsWith('train_')?'出発期限の基準便・予約未確認 · ':e(s.status)+' · ')+sourceLink(s.source_id):'計画上の目安'}</small></div></div>`).join('')}</div>`;
     const hotelDetails = $('hotelconditions').closest('details');
     hotelDetails.querySelector('summary').textContent = '宿泊候補・予約前の確認';
     $('hotelconditions').innerHTML = `<p><strong>${e(a.hotel_name)}</strong><br>${e(a.hotel_location)} ${sourceLink('hotel')}</p><p>10/3チェックイン・10/4チェックアウト、大人${n}人1室。${yen(a.hotel_room_total_jpy,1)}／室は仮予算です。指定日の販売価格・空室・予約成立は未確認です。</p><p>新幹線案ではホテル駐車場も有明の予約駐車場も利用しません。</p>`;
+    document.querySelector('#dinner > p').innerHTML = `<strong>肉料理を楽しむ4店。夕食${yen(meal,1)}／人は比較用の仮置きです。</strong><br><span class="note">店・注文内容・実支払額は未確定です。</span>`;
     const visibleKeys = ['hotel_room_total_jpy','local_rail_budget_jpy_per_person'];
     $('fields').querySelectorAll('input[data-key]').forEach(input=>{input.closest('label').hidden=!visibleKeys.includes(input.dataset.key);});
     document.querySelector('#edit h2').textContent = '新幹線案の宿・都内交通予算を変更';
     const dinnerBudget = $('dinner-totals');
     if (dinnerBudget) {
       dinnerBudget.classList.add('rail-only-total');
-      dinnerBudget.innerHTML = `<div class="dinner-total"><span>新幹線・選択済み</span><strong>約${yen(total)}／人</strong><small>交通・宿泊＋10/3夕食。往復割引席を購入できた場合の仮予算。</small></div>`;
+      dinnerBudget.innerHTML = `<div class="dinner-total"><span>新幹線・選択済み</span><strong>約${yen(total)}／人</strong><small>交通・宿泊＋10/3夕食。通常期eチケットの参考額を使った仮予算。</small></div>`;
       const box = document.querySelector('#dinner .dinner-budget');
       box.querySelector('p.note').textContent = data.dinner.integration;
-      box.querySelector('p.note:last-child').textContent = '宿代・都内交通費は仮予算で、割引席も未確保です。その他の食費・入場券等は別です。入力値の変更はこの画面だけに反映されます。';
+      box.querySelector('p.note:last-child').textContent = '宿代・都内交通費は仮予算で、新幹線の実売額・座席も未確認です。その他の食費・入場券等は別です。入力値の変更はこの画面だけに反映されます。';
       const timing = document.querySelector('#dinner .dinner-timing');
       if (timing) {
         timing.innerHTML = `<li><strong>新幹線案</strong>：${e(data.dinner.timing.rail)}</li>`;
@@ -128,14 +128,17 @@
         timing.parentElement.querySelector('p:last-child').textContent = data.dinner.safety_plan;
       }
     }
-    const extra = [`移動手段は新幹線に決定。列車・座席・宿・夕食の予約成立は未確認。`,`10/3の新潟駅出発は任意。ただし遅くとも16:22までに出発する。`,`10/4の東京駅出発も任意。ただし遅くとも17:32までに出発する。17:32発は帰路の最終ボーダー。`,`10/3夕食${yen(meal,1)}／人は旅行総額比較のための仮置きで、確定予算ではない。`,`宿泊は${yen(a.hotel_room_total_jpy,1)}／室、都内交通は${yen(a.local_rail_budget_jpy_per_person,1)}／人の仮予算。`,`新幹線は往復トクだ値1の設定・空きがある場合を想定。通常価格の試算も価格例であり、購入総額ではない。`,`新潟駅発着の計画です。10/4中に佐渡へ戻れることを保証する行程ではありません。`];
+    const extra = [`移動手段は新幹線に決定。列車・座席・宿・夕食の予約成立は未確認。`,`10/3の新潟駅出発は任意。ただし遅くとも16:22までに出発する。`,`10/4の東京駅出発も任意。ただし遅くとも17:32までに出発する。17:32発は帰路の最終ボーダー。`,`10/3夕食${yen(meal,1)}／人は旅行総額比較のための仮置きで、確定予算ではない。`,`宿泊は${yen(a.hotel_room_total_jpy,1)}／室、都内交通は${yen(a.local_rail_budget_jpy_per_person,1)}／人の仮予算。`,`新幹線は通常期eチケットの参考額で仮計算。トクだ値1は今回の乗車日には使えず、購入総額・座席は未確認。`,`新潟駅発着の計画です。10/4中に佐渡へ戻れることを保証する行程ではありません。`];
     $('assumptions').innerHTML = extra.map(s=>`<li>${e(s)}</li>`).join('');
+    $('changes').innerHTML = '<li>移動手段を新幹線に決定し、車案と駐車計画は参考資料にまとめました。</li><li>往復とも出発期限までの便から選べます。夕食代は仮置きです。</li><li>トクだ値1の発売終了を確認し、通常期eチケットの参考額で仮計算するよう修正しました。</li>';
+    document.querySelector('#edit .note').innerHTML = '宿代・都内交通費の変更はこの画面だけに反映されます。<a href="#dinner-budget-input">夕食代はこちらで変更</a>。予約や外部送信は行いません。再読み込みで初期値に戻ります。';
     document.querySelectorAll('#cards .card').forEach((card,i)=>{
       const chosen = data.plans[i].id === data.decision.selected_plan_id;
       card.classList.toggle('recommended',chosen);
       card.querySelector('.pill').textContent = chosen?'選択済み':'不採用・参考';
     });
-    $('decision').textContent = '選択済みは③新幹線です。ここは移動手段を決める前の費用比較を残した参考資料です。';
+    document.querySelector('#compare h2').textContent = '参考：交通・宿泊のみの比較（夕食代は含まない）';
+    $('decision').textContent = '選択済みは③新幹線です。ここは夕食代を含まない交通・宿泊のみの比較です。夕食を加えた総額は「決定したプラン」で確認できます。';
     const parkingTitle = document.querySelector('#parking h2');
     if (parkingTitle) parkingTitle.textContent = '参考：新幹線案では利用しない駐車計画';
     document.getElementById('semantic-data').textContent = JSON.stringify(original);

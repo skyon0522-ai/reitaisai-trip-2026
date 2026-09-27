@@ -16,8 +16,8 @@
     });
   }
   try {
-    await load('./trip-ui.js?v=20260927-rail1');
-    await load('./rail-selection.js?v=20260927-rail1');
+    await load('./trip-ui.js?v=20260927-review2');
+    await load('./rail-selection.js?v=20260927-review2');
     if (!document.getElementById('selected-plan')) throw new Error('Selected plan view did not initialize');
     status.remove();
   } catch (error) {

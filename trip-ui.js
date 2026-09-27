@@ -82,7 +82,7 @@
 <div class="map-fallback"><p>埋め込み表示で経路が出ない場合は、上のGoogleマップボタンを利用してください。<button id="map-place-only" type="button">目的地の地図だけ表示</button> <button id="map-route-again" type="button">経路表示に戻す</button></p><p>地図の読み込み時にGoogleへ接続します。ページ内の予算入力は送信しません。</p></div>
 </div></div>
 <details><summary>経路の道路条件・列車・料金について</summary><div class="detailbody map-note"><p><strong>一般道と高速を混在させるため、車はICごとに分けています。</strong>ページ内地図は経路の参考表示です。道路条件は「Googleマップで開く」で確認し、一般道区間は高速・有料道路を避ける設定、高速区間は回避OFFにしてください。Googleの候補は、この計画の道路を固定したものではありません。</p><p><strong>公共交通は旅行日・時刻をGoogleマップ上で設定してください。</strong>10/3・10/4の列車や接続を自動指定するリンクではありません。ICと会場は代表地点で、実際の出入口・駐車場・待機列の場所は当日の案内に従ってください。</p><p>料金表の800kmは燃料の共通予算枠のままです。地図上の実走距離・所要時間・渋滞を料金表へ自動反映するものではありません。</p></div></details>
-<div class="map-resources"><a href="https://www.bigsight.jp/visitor/parking/" target="_blank" rel="noopener noreferrer">会場の駐車場・営業案内</a><a href="${e(data.sources.find(s => s.id === 'hotel').url)}" target="_blank" rel="noopener noreferrer">ホテルのアクセス</a><a href="${e(routes.source_url)}" target="_blank" rel="noopener noreferrer">経路リンクの仕様（Google公式）</a></div>
+<div class="map-resources"><a href="https://www.bigsight.jp/visitor/access/" target="_blank" rel="noopener noreferrer">東京ビッグサイトのアクセス案内</a><a href="${e(data.sources.find(s => s.id === 'hotel').url)}" target="_blank" rel="noopener noreferrer">ホテルのアクセス</a><a href="${e(routes.source_url)}" target="_blank" rel="noopener noreferrer">経路リンクの仕様（Google公式）</a></div>
 `;
     const $ = id => document.getElementById(id);
     let selectedPlan = routes.default_plan_id;
@@ -167,7 +167,7 @@
     schema_version: '1.0', date: '2026-10-03', checked_date: '2026-09-27',
     status: '候補比較・店は未決定・未予約', selected_restaurant_id: null,
     budget_jpy_per_person: 7000,
-    budget_scope: '料理・飲み物・席料を合わせた希望予算。店の確定コース料金ではありません。',
+    budget_scope: '料理・飲み物・席料を含む比較用の仮置き。確定予算や店のコース料金ではありません。',
     availability: '10/3・3名の空席と当日の営業・提供料理は未確認です。掲載価格は予約時に再確認してください。',
     integration: '元の交通・宿泊比較は変更せず、この欄で10/3夕食代だけを加算。その他の食費・入場券等は引き続き別。',
     timing: {
@@ -208,8 +208,8 @@
         fit: '前菜よりも、ヒレステーキそのものに予算を使いたいときの候補。',
         address: '東京都江戸川区西葛西6-14 メトロセンター1番街', phone: '03-3675-2340',
         hours: '公式掲載 17:00〜22:30（L.O.21:45）／火曜・第2第4月曜休',
-        menu_samples: '公式ページ掲載の特上ヒレステーキは150g 4,290円／220g 5,990円（税込）。価格改定の可能性があるため、来店時価格は要確認。',
-        order_idea: '150gのヒレを中心に、サイドをシェアして飲み物を追加。220gを選ぶとサイドと飲み物に使える残額が小さくなる。',
+        menu_samples: '公式ページ掲載の特上ヒレステーキは150g 4,890円／220g 6,890円（税込）。価格改定の可能性があるため、来店時価格は要確認。',
+        order_idea: '150gのヒレを中心に、サイドをシェアして飲み物を追加。220gでは仮置きの7,000円まで残り110円なので、飲み物やサイドを追加するなら予算の調整が必要。',
         caution: '掲載価格と当日価格は同一と保証されません。クーポン利用を前提にせず、7,000円前後で頼める内容を確認します。',
         seats: 'テーブル席のある店舗。10/3の3名席は未確保。',
         url: 'https://amigo1979nishikasai.com/',
@@ -254,7 +254,7 @@
   const walk = (from,to) => 'https://www.google.com/maps/dir/?' + new URLSearchParams({api:'1',origin:from,destination:to,travelmode:'walking'});
   host.innerHTML = `
 <h2 id="dinner-heading">10/3（土）の夕食候補</h2>
-<p><strong>肉料理を楽しむ4店。焼肉に限定せず、1人7,000円前後を目指します。</strong><br><span class="note">${escape(dinner.status)}。${escape(dinner.budget_scope)}</span></p>
+<p><strong>肉料理を楽しむ4店。夕食7,000円／人は比較用の仮置きです。</strong><br><span class="note">${escape(dinner.status)}。${escape(dinner.budget_scope)}</span></p>
 <div class="notice">${escape(dinner.availability)}</div>
 <div class="dinner-grid">${dinner.candidates.map(r => {
  const query=r.name+' '+r.address;
