@@ -27,4 +27,4 @@ function renderFields(){el('fields').innerHTML=fields.map(([key,label,min,step])
 el('reset').addEventListener('click',()=>{data=structuredClone(original);renderFields();render();el('error').textContent='';});
 el('export').addEventListener('click',()=>{const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='reitaisai_trip_conditions.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
 renderFields();render();
-</script><script src="routes.js?v=20260927-rail-only1"></script></body></html>
+</script><script src="routes.js?v=20260927-lodging1"></script></body></html>
