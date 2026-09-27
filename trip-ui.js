@@ -33,7 +33,7 @@
 `;
   document.head.append(style);
   try {
-    const response = await fetch('./routes.json?v=20260927-1', {cache: 'no-cache'});
+    const response = await fetch('./routes.json?v=20260927-rail-only1', {cache: 'no-cache'});
     if (!response.ok) throw new Error('HTTP ' + response.status);
     const routes = await response.json();
     const origin = routes.places[routes.origin_id];
@@ -41,6 +41,7 @@
     // Include exactly the same route definitions in the existing JSON export/reset.
     original.map_routes = routes;
     data.map_routes = structuredClone(routes);
+    document.getElementById('semantic-data').textContent = JSON.stringify(original);
     const e = value => String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
     function place(id) {
       const p = routes.places[id];
@@ -51,25 +52,22 @@
     }
     function label(leg) {
       if (leg.mode === 'walking') return '徒歩';
-      if (leg.mode === 'transit') return leg.line || '公共交通';
-      return leg.road === 'local' ? '一般道・有料／高速回避' : '高速道路を利用';
+      return leg.line || '公共交通';
     }
     function directionsUrl(leg) {
       const params = new URLSearchParams({api:'1', origin:place(leg.from).query, destination:place(leg.to).query, travelmode:leg.mode});
-      if (leg.mode === 'driving') params.set('avoid', leg.road === 'local' ? 'highways,tolls,ferries' : 'ferries');
       return 'https://www.google.com/maps/dir/?' + params;
     }
     function embedUrl(leg) {
       // Keyless Google Maps directions preview. The supported Maps URL above is
       // always available separately because embedded results can vary by client.
-      const mode = leg.mode === 'transit' ? 'r' : leg.mode === 'walking' ? 'w' : leg.road === 'local' ? 'dht' : 'd';
+      const mode = leg.mode === 'transit' ? 'r' : 'w';
       const params = new URLSearchParams({f:'d', saddr:place(leg.from).query, daddr:place(leg.to).query, dirflg:mode, hl:'ja', output:'embed'});
       return 'https://maps.google.com/maps?' + params;
     }
     host.innerHTML = `
 <h2 id="maps-heading">Googleマップで経路を見る</h2>
-<p class="map-intro"><strong>${e(origin.label)}を出発し、同じ駅に戻る3案です。</strong>プラン → 日程 → 区間の順に選ぶと、表示する地図を切り替えられます。</p>
-<div class="map-pickers" id="map-plans" role="group" aria-label="移動プラン"></div>
+<p class="map-intro"><strong>${e(origin.label)}発着の電車・徒歩ルートです。</strong>日程と区間を選ぶと、地図を切り替えられます。</p>
 <div class="map-pickers map-phase" id="map-phases" role="group" aria-label="移動日程"></div>
 <p class="map-chain" id="map-chain"></p>
 <div class="map-panel">
@@ -81,11 +79,11 @@
 <div class="map-controls"><button id="map-prev" type="button">前の区間</button><span id="map-counter" aria-live="polite"></span><button id="map-next" type="button">次の区間</button></div>
 <div class="map-fallback"><p>埋め込み表示で経路が出ない場合は、上のGoogleマップボタンを利用してください。<button id="map-place-only" type="button">目的地の地図だけ表示</button> <button id="map-route-again" type="button">経路表示に戻す</button></p><p>地図の読み込み時にGoogleへ接続します。ページ内の予算入力は送信しません。</p></div>
 </div></div>
-<details><summary>経路の道路条件・列車・料金について</summary><div class="detailbody map-note"><p><strong>一般道と高速を混在させるため、車はICごとに分けています。</strong>ページ内地図は経路の参考表示です。道路条件は「Googleマップで開く」で確認し、一般道区間は高速・有料道路を避ける設定、高速区間は回避OFFにしてください。Googleの候補は、この計画の道路を固定したものではありません。</p><p><strong>公共交通は旅行日・時刻をGoogleマップ上で設定してください。</strong>10/3・10/4の列車や接続を自動指定するリンクではありません。ICと会場は代表地点で、実際の出入口・駐車場・待機列の場所は当日の案内に従ってください。</p><p>料金表の800kmは燃料の共通予算枠のままです。地図上の実走距離・所要時間・渋滞を料金表へ自動反映するものではありません。</p></div></details>
-<div class="map-resources"><a href="https://www.bigsight.jp/visitor/access/" target="_blank" rel="noopener noreferrer">東京ビッグサイトのアクセス案内</a><a href="${e(data.sources.find(s => s.id === 'hotel').url)}" target="_blank" rel="noopener noreferrer">ホテルのアクセス</a><a href="${e(routes.source_url)}" target="_blank" rel="noopener noreferrer">経路リンクの仕様（Google公式）</a></div>
+<details><summary>地図を使うときの注意</summary><div class="detailbody map-note"><p>旅行日と出発時刻を設定して乗り継ぎを確認してください。会場の入口・待機列は主催者の当日案内に従ってください。</p></div></details>
+<div class="map-resources"><a href="https://www.bigsight.jp/visitor/access/" target="_blank" rel="noopener noreferrer">東京ビッグサイトのアクセス案内</a><a href="${e(data.sources.find(s => s.id === 'hotel').url)}" target="_blank" rel="noopener noreferrer">ホテルのアクセス</a></div>
 `;
     const $ = id => document.getElementById(id);
-    let selectedPlan = routes.default_plan_id;
+    const selectedPlan = routes.default_plan_id;
     let selectedStage = routes.default_stage_id;
     let selectedLeg = 0;
     let mapRequested = false;
@@ -123,8 +121,6 @@
       loadFrame(embedUrl(currentLeg));
     }
     function renderRoutes() {
-      const planNames = Object.fromEntries(data.plans.map(p => [p.id, p.name]));
-      $('map-plans').innerHTML = Object.keys(routes.plan_stages).map(id => `<button type="button" data-plan="${e(id)}" aria-pressed="${id === selectedPlan}">${e(planNames[id])}</button>`).join('');
       $('map-phases').innerHTML = Object.entries(routes.stages).map(([id, s]) => `<button type="button" data-stage="${e(id)}" aria-pressed="${id === selectedStage}">${e(s.label)}</button>`).join('');
       const routeIds = ids();
       selectedLeg = Math.min(selectedLeg, routeIds.length - 1);
@@ -137,8 +133,7 @@
     host.addEventListener('click', event => {
       const button = event.target.closest('button');
       if (!button) return;
-      if (button.dataset.plan) {selectedPlan=button.dataset.plan;selectedLeg=0;renderRoutes();}
-      else if (button.dataset.stage) {selectedStage=button.dataset.stage;selectedLeg=0;renderRoutes();}
+      if (button.dataset.stage) {selectedStage=button.dataset.stage;selectedLeg=0;renderRoutes();}
       else if (button.dataset.leg !== undefined) {selectedLeg=Number(button.dataset.leg);renderSelectedLeg();}
     });
     $('map-leg-select').addEventListener('change', event => {selectedLeg=Number(event.target.value);renderSelectedLeg();});
@@ -155,7 +150,7 @@
     if (location.hash === '#maps') host.scrollIntoView({block:'start'});
   } catch (error) {
     console.error('Route map setup:', error);
-    host.innerHTML = '<h2 id="maps-heading">Googleマップで経路を見る</h2><div class="notice">経路データを読み込めませんでした。ページを再読み込みしてください。既存の費用比較・行程は引き続き利用できます。</div>';
+    host.innerHTML = '<h2 id="maps-heading">Googleマップで経路を見る</h2><div class="notice">経路データを読み込めませんでした。ページを再読み込みしてください。予算・行程は引き続き利用できます。</div>';
   }
 }());
 
@@ -167,15 +162,13 @@
     schema_version: '1.0', date: '2026-10-03', checked_date: '2026-09-27',
     status: '候補比較・店は未決定・未予約', selected_restaurant_id: null,
     budget_jpy_per_person: 7000,
-    budget_scope: '料理・飲み物・席料を含む比較用の仮置き。確定予算や店のコース料金ではありません。',
+    budget_scope: '料理・飲み物・席料を含む仮置き。確定予算や店のコース料金ではありません。',
     availability: '10/3・3名の空席と当日の営業・提供料理は未確認です。掲載価格は予約時に再確認してください。',
-    integration: '元の交通・宿泊比較は変更せず、この欄で10/3夕食代だけを加算。その他の食費・入場券等は引き続き別。',
+    integration: '交通・宿泊予算に10/3夕食代を加算。その他の食費・入場券等は別です。',
     timing: {
-      mixed: '19:30ごろ開始（宿への到着後。遅れる場合は店へ連絡）',
-      highway: '19:00ごろ開始 → 21:00ごろ終了を目安',
       rail: '19:30〜20:00開始 → 21:30〜22:00終了を目安'
     },
-    safety_plan: '車はホテルに置いて徒歩で往復する計画です。翌朝の運転担当はノンアルコールでの参加を基本にします。',
+    safety_plan: '夕食はホテルから徒歩で往復します。',
     candidates: [
       {
         id: 'sante', name: 'Deli & Vino Maru-shu Sante', short_name: 'マルシュ サンテ', genre: 'ビストロ・ワイン',
@@ -223,7 +216,7 @@
         hours: '公式掲載 土曜11:00〜24:00（L.O.23:00）／早仕舞いの場合あり',
         menu_samples: '上タン塩 2,480円、上カルビ 2,680円、特上ハラミ 2,880円。いずれも掲載税込価格。',
         order_idea: '肉を数種類シェアし、追加肉・ご飯物・飲み物を3人の合計予算に合わせて注文する。',
-        caution: '以前挙げた5,500円コースは現行条件を確認できていないため、確定プランとして載せず、単品注文で比較しています。',
+        caution: 'コースの条件は未確認のため、単品注文で検討しています。',
         seats: '公式案内は店内禁煙。店外に喫煙スペースあり。3名席は未確保。',
         url: 'https://yakiniku-taishou.owst.jp/',
         source_url: 'https://yakiniku-taishou.owst.jp/',
@@ -236,10 +229,10 @@
   const host = document.createElement('section');
   host.id = 'dinner';
   host.setAttribute('aria-labelledby', 'dinner-heading');
-  (document.getElementById('parking') || document.getElementById('time')).before(host);
+  document.getElementById('edit').before(host);
   const nav = document.createElement('a');
   nav.href = '#dinner'; nav.textContent = '10/3の夕食';
-  const navBefore = document.querySelector('header nav a[href="#parking"],header nav a[href="#time"]');
+  const navBefore = document.querySelector('header nav a[href="#edit"]');
   navBefore.before(nav);
   const css = document.createElement('style');
   css.textContent = `
@@ -254,15 +247,14 @@
   const walk = (from,to) => 'https://www.google.com/maps/dir/?' + new URLSearchParams({api:'1',origin:from,destination:to,travelmode:'walking'});
   host.innerHTML = `
 <h2 id="dinner-heading">10/3（土）の夕食候補</h2>
-<p><strong>肉料理を楽しむ4店。夕食7,000円／人は比較用の仮置きです。</strong><br><span class="note">${escape(dinner.status)}。${escape(dinner.budget_scope)}</span></p>
+<p><strong>肉料理を楽しむ4店。夕食7,000円／人は仮置きです。</strong><br><span class="note">${escape(dinner.status)}。${escape(dinner.budget_scope)}</span></p>
 <div class="notice">${escape(dinner.availability)}</div>
 <div class="dinner-grid">${dinner.candidates.map(r => {
  const query=r.name+' '+r.address;
  return `<article class="dinner-card" id="dinner-${escape(r.id)}"><span class="pill">${escape(r.genre)}・未予約</span><h3>${escape(r.name)}</h3><p>${escape(r.fit)}</p><p class="dinner-address">${escape(r.address)}<br>${escape(r.hours)}</p><p><strong>注文の組み方（提案）</strong><br>${escape(r.order_idea)}</p><details><summary>料理の掲載価格・予算と席の注意</summary><div class="detailbody"><p>${escape(r.menu_samples)}</p><p><strong>注意：</strong>${escape(r.caution)}</p><p>${escape(r.seats)}</p></div></details><div class="dinner-links">${link(r.url,'店舗・予約案内 ↗')}${link(walk(hotel,query),'宿 → 店（徒歩） ↗')}${link(walk(query,hotel),'店 → 宿（徒歩） ↗')}<a href="tel:${escape(r.phone)}">電話 ${escape(r.phone)}</a></div><p class="dinner-source">確認元：${link(r.source_url,r.source_title)}／${escape(dinner.checked_date)}参照。掲載内容と当日の提供内容は異なる場合があります。</p></article>`;
  }).join('')}</div>
-<div class="dinner-budget"><h3>10/3の夕食代を加えると</h3><p class="note">${escape(dinner.integration)}</p><label for="dinner-budget-input">夕食の予算／1人（円）</label><input type="number" id="dinner-budget-input" min="0" step="100" inputmode="numeric"><span id="dinner-group-total"></span><p id="dinner-budget-error" class="error" role="status"></p><div id="dinner-totals" class="dinner-totals" aria-live="polite"></div><p class="note">宿代・駐車場代などは引き続き仮予算です。車案は、未入力の駐車サービス料が別途必要です。数値変更はこの画面だけで、予約・外部送信は行いません。</p></div>
-<details><summary>移動プラン別の夕食開始時間</summary><div class="detailbody"><ul class="dinner-timing">${data.plans.map(p=>`<li><strong>${escape(p.name)}</strong>：${escape(dinner.timing[p.id])}</li>`).join('')}</ul><p class="note">開始時刻は提案で、予約時刻ではありません。移動の遅れ・チェックイン・徒歩時間を見込んで決めてください。</p><p>${escape(dinner.safety_plan)}</p></div></details>
-<p class="note">夕食候補・予算・確認元は「現在の計算条件をJSONで保存」にも含まれます。</p>
+<div class="dinner-budget"><h3>10/3の夕食代を加えると</h3><p class="note">${escape(dinner.integration)}</p><label for="dinner-budget-input">夕食の予算／1人（円）</label><input type="number" id="dinner-budget-input" min="0" step="100" inputmode="numeric"><span id="dinner-group-total"></span><p id="dinner-budget-error" class="error" role="status"></p><div id="dinner-totals" class="dinner-totals" aria-live="polite"></div><p class="note">宿代・都内交通費は仮予算です。入力値の変更はこの画面だけに反映されます。</p></div>
+<details><summary>夕食開始時間の目安</summary><div class="detailbody"><ul class="dinner-timing">${data.plans.map(p=>`<li><strong>${escape(p.name)}</strong>：${escape(dinner.timing[p.id])}</li>`).join('')}</ul><p class="note">開始時刻は提案で、予約時刻ではありません。移動の遅れ・チェックイン・徒歩時間を見込んで決めてください。</p><p>${escape(dinner.safety_plan)}</p></div></details>
 `;
   function renderDinnerTotals() {
     const meal = data.dinner.budget_jpy_per_person;
@@ -271,8 +263,7 @@
     document.getElementById('dinner-group-total').textContent = data.trip.adults + '人で ' + yen(meal*data.trip.adults,1);
     document.getElementById('dinner-totals').innerHTML = data.plans.map(p => {
       const total = calc(p).total + meal;
-      const pending = p.mode === 'car' && data.assumptions.parking_service_fee_jpy_per_vehicle == null;
-      return `<div class="dinner-total"><span>${escape(p.name)}</span><strong>約${yen(total)}／人</strong><small>交通・宿泊＋10/3夕食${pending?'／未確定の駐車サービス料は別':''}</small></div>`;
+      return `<div class="dinner-total"><span>${escape(p.name)}</span><strong>約${yen(total)}／人</strong><small>交通・宿泊＋10/3夕食</small></div>`;
     }).join('');
   }
   document.getElementById('dinner-budget-input').addEventListener('input',event=>{

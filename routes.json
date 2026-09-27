@@ -5,35 +5,15 @@
   "default_plan_id": "rail",
   "default_stage_id": "outbound",
   "source_url": "https://developers.google.com/maps/documentation/urls/get-started",
-  "status": "新幹線案を選択済み。往路は10/3新潟駅16:22まで、復路は10/4東京駅17:32までに出発。どちらもそれ以前の便は選択可。Googleマップは便を固定しません。車ルートは参考資料です。",
+  "status": "新幹線案を選択済み。往路は10/3新潟駅16:22まで、復路は10/4東京駅17:32までに出発。どちらもそれ以前の便は選択可。Googleマップは便を固定しません。",
   "places": {
     "niigata": {
       "label": "新潟駅",
       "query": "新潟駅 新潟県新潟市中央区"
     },
-    "chuo": {
-      "label": "新潟中央IC",
-      "query": "新潟中央インターチェンジ 新潟県新潟市"
-    },
-    "yuzawa": {
-      "label": "湯沢IC",
-      "query": "関越自動車道 湯沢インターチェンジ 新潟県湯沢町"
-    },
-    "tsukiyono": {
-      "label": "月夜野IC",
-      "query": "関越自動車道 月夜野インターチェンジ 群馬県みなかみ町"
-    },
-    "nerima": {
-      "label": "練馬IC",
-      "query": "関越自動車道 練馬インターチェンジ 東京都練馬区"
-    },
     "hotel": {
       "label": "宿（西葛西）",
       "source": "hotel"
-    },
-    "parking": {
-      "label": "有明セントラルタワー1F・予約駐車場",
-      "query": "Dパーキング有明セントラルタワー 東京都江東区有明3丁目7-18"
     },
     "venue": {
       "label": "ビッグサイト東ホール",
@@ -87,88 +67,6 @@
     }
   },
   "legs": {
-    "mixed_1": {
-      "from": "niigata",
-      "to": "yuzawa",
-      "mode": "driving",
-      "road": "local",
-      "note": "国道8号・17号方面の一般道を使う計画です。Googleマップの候補が有料道路を避けているか確認してください。"
-    },
-    "mixed_2": {
-      "from": "yuzawa",
-      "to": "tsukiyono",
-      "mode": "driving",
-      "road": "expressway",
-      "note": "この区間だけ関越道を使って山越えします。高速・有料道路の回避設定をOFFにして、関越道の候補を選んでください。"
-    },
-    "mixed_3": {
-      "from": "tsukiyono",
-      "to": "hotel",
-      "mode": "driving",
-      "road": "local",
-      "note": "月夜野ICを降りてからは一般道です。途中で高速や首都高に入り直さない候補を確認してください。"
-    },
-    "station_chuo": {
-      "from": "niigata",
-      "to": "chuo",
-      "mode": "driving",
-      "road": "local",
-      "note": "新潟駅で集合して出発する想定です。駅での乗降場所は3人で決め、停車可能な場所を利用してください。"
-    },
-    "expressway_out": {
-      "from": "chuo",
-      "to": "nerima",
-      "mode": "driving",
-      "road": "expressway",
-      "note": "北陸道・関越道経由を使う計画です。Googleマップで道路名と出入口を確認してください。料金比較は新潟中央IC〜練馬ICで計算しています。"
-    },
-    "nerima_hotel": {
-      "from": "nerima",
-      "to": "hotel",
-      "mode": "driving",
-      "road": "local",
-      "note": "基本予算では練馬ICから先は一般道です。首都高・外環を使う候補を選ぶ場合は、別途料金が必要です。"
-    },
-    "hotel_parking_car": {
-      "from": "hotel",
-      "to": "parking",
-      "mode": "driving",
-      "road": "local",
-      "note": "07:45〜08:00に宿を出発し、08:30〜08:45の入庫を目指す計画です。本命はDパーキング有明セントラルタワー1F月極スペース。未予約なので、予約成立後に利用してください。Googleマップは施設の代表地点です。予約ページの入口写真を確認し、時間貸しではなく月極入口へ進んでください。"
-    },
-    "parking_venue_walk": {
-      "from": "parking",
-      "to": "venue",
-      "mode": "walking",
-      "note": "予約区画へ駐車してから東ホールまで徒歩。09:00〜09:15ごろ会場周辺に着く計画で、歩行・入口確認に余裕を持たせています。実際の一般参加者入口・待機列は主催者の当日案内に従ってください。予約暗証番号は公開ページに記載しないでください。"
-    },
-    "venue_parking_walk": {
-      "from": "venue",
-      "to": "parking",
-      "mode": "walking",
-      "note": "15:45〜16:00ごろに会場を出て、徒歩で予約駐車場へ戻ります。車は会場公式駐車場ではなく有明セントラルタワー1Fです。再入庫不可なので、荷物を積み込んで帰る準備を済ませてから出庫してください。"
-    },
-    "parking_nerima": {
-      "from": "parking",
-      "to": "nerima",
-      "mode": "driving",
-      "road": "local",
-      "note": "16:15〜16:30ごろに予約駐車場を出庫し、一般道で練馬ICへ向かう計画です。予約していても入出庫待ち・周辺渋滞は発生し得ます。首都高等を利用する場合は、基本予算と別に料金を確認してください。"
-    },
-    "expressway_back": {
-      "from": "nerima",
-      "to": "chuo",
-      "mode": "driving",
-      "road": "expressway",
-      "note": "帰路は関越道・北陸道経由で新潟中央ICへ。運転交代・休憩は地図の所要時間とは別に確保してください。"
-    },
-    "chuo_station": {
-      "from": "chuo",
-      "to": "niigata",
-      "mode": "driving",
-      "road": "local",
-      "note": "新潟中央ICから一般道で新潟駅に戻る計画です。徒歩・出庫の余裕を加え、新潟駅帰着の目安を22:00〜23:30に変更しました。渋滞や休憩でさらに遅れる可能性があります。"
-    },
     "rail_out": {
       "from": "niigata",
       "to": "tokyo",
@@ -257,40 +155,6 @@
     }
   },
   "plan_stages": {
-    "mixed": {
-      "outbound": [
-        "mixed_1",
-        "mixed_2",
-        "mixed_3"
-      ],
-      "venue": [
-        "hotel_parking_car",
-        "parking_venue_walk"
-      ],
-      "return": [
-        "venue_parking_walk",
-        "parking_nerima",
-        "expressway_back",
-        "chuo_station"
-      ]
-    },
-    "highway": {
-      "outbound": [
-        "station_chuo",
-        "expressway_out",
-        "nerima_hotel"
-      ],
-      "venue": [
-        "hotel_parking_car",
-        "parking_venue_walk"
-      ],
-      "return": [
-        "venue_parking_walk",
-        "parking_nerima",
-        "expressway_back",
-        "chuo_station"
-      ]
-    },
     "rail": {
       "outbound": [
         "rail_out",

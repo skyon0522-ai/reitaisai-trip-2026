@@ -16,12 +16,12 @@
     });
   }
   try {
-    await load('./trip-ui.js?v=20260927-review2');
-    await load('./rail-selection.js?v=20260927-review2');
+    await load('./trip-ui.js?v=20260927-rail-only1');
+    await load('./rail-selection.js?v=20260927-rail-only1');
     if (!document.getElementById('selected-plan')) throw new Error('Selected plan view did not initialize');
     status.remove();
   } catch (error) {
     console.error('Trip view loading:', error);
-    status.textContent = '移動手段は新幹線に決定しています。更新表示を読み込めませんでした。再読み込みしてください。下に残っている車案は以前の比較資料です。';
+    status.textContent = '移動手段は新幹線に決定しています。更新表示を読み込めませんでした。再読み込みしてください。';
   }
 }());
