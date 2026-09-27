@@ -33,7 +33,7 @@
 `;
   document.head.append(style);
   try {
-    const response = await fetch('./routes.json?v=20260927-rail-only1', {cache: 'no-cache'});
+    const response = await fetch('./routes.json?v=20260928-alternative1', {cache: 'no-cache'});
     if (!response.ok) throw new Error('HTTP ' + response.status);
     const routes = await response.json();
     const origin = routes.places[routes.origin_id];

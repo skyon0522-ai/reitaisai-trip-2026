@@ -13,18 +13,21 @@
     target.schema_version = '2.3';
     target.title = '新潟駅発・秋季例大祭｜新幹線プラン';
     target.decision = structuredClone(decision);
-    target.last_update = '2026-09-27';
+    target.last_update = '2026-09-28';
     target.trip.transport = 'shinkansen';
     target.trip.selected_plan_id = decision.selected_plan_id;
     target.lodging = {
-      id: 'lumiere_nishikasai', status: '候補・未予約', checked_date: '2026-09-27',
-      access: '西葛西駅南口から徒歩約5分',
-      room: 'ツイン21㎡。公式サイトにベッド3台利用の案内があります。3人利用時の寝具構成は予約時に確認してください。',
-      breakfast: '無料の軽朝食 6:30〜10:00', check_in: '15:00', check_out: '10:00',
-      room_url: 'https://www.hotel-lumiere.jp/nishikasai/guest/twin/',
-      facilities_url: 'https://www.hotel-lumiere.jp/nishikasai/facilities/',
-      booking_url: 'https://d-reserve.jp/GSEA001F01300/GSEA001A01?hotelCode=0000003758',
-      dinner_origin: 'この宿を起点に夕食候補の徒歩経路を表示。宿を変える場合は、夕食店の場所と経路も見直す。'
+      id: 'minn_nishikasai', status: '代替候補・未予約', checked_date: '2026-09-27', checked_at: '2026-09-27T23:54:00+09:00',
+      access: '西葛西駅北口から徒歩約3〜4分',
+      room: 'スタンダードルーム（4ベッド）25㎡・禁煙。シングルベッド2台にバンクベッドとソファを備えた客室です。3人目の寝具は予約時に確認してください。',
+      breakfast: '食事なし。朝食は別に用意', check_in: '15:00', check_out: '10:00',
+      room_url: 'https://www.jalan.net/uw/uwp3200/uww3201init.do?yadNo=326205&planCd=03485126&roomTypeCd=0471104&stayYear=2026&stayMonth=10&stayDay=3&stayCount=1&roomCount=1&adultNum=3&roomCrack=300000&dateUndecided=0',
+      booking_url: 'https://www.jalan.net/yad326205/plan/?stayYear=2026&stayMonth=10&stayDay=3&stayCount=1&roomCount=1&adultNum=3&dateUndecided=0',
+      quoted_total_jpy: 25500, quoted_per_person_jpy: 8500, quote_status: '販売を確認・未予約',
+      cancellation: '予約時からキャンセル料100%。オンラインカード決済。',
+      room_preference: '3人1室に限定せず、2人部屋＋1人部屋も3人分の総額で比較。',
+      alternative: {name:'Minn 葛西',total_jpy:28800,per_person_jpy:9600,room:'スタンダード4ベッド25㎡・禁煙・食事なし',booking_url:'https://www.jalan.net/yad373240/plan/?stayYear=2026&stayMonth=10&stayDay=3&stayCount=1&roomCount=1&adultNum=3&dateUndecided=0'},
+      dinner_origin: '比較のためMinn 西葛西を起点に表示。宿は未決定。Minn 葛西を選ぶ場合は、葛西駅から西葛西駅へ東西線で1駅移動する。'
     };
     target.trip.outbound_departure_rule = {
       date: '2026-10-03',
@@ -73,7 +76,7 @@
   const lodging = document.createElement('section');
   lodging.id = 'lodging';
   lodging.setAttribute('aria-labelledby', 'lodging-heading');
-  lodging.innerHTML = '<h2 id="lodging-heading">10/3（土）の宿泊候補</h2><p>まず宿の場所と3人で泊まれる条件を確認し、その宿から行く夕食店を選びます。</p>';
+  lodging.innerHTML = '<h2 id="lodging-heading">10/3（土）の宿泊候補</h2><p>部屋数にこだわらず、3人分の総額で選びます。宿を決めてから、夕食店への移動を確認します。</p>';
   const hotelConditions = $('hotelconditions');
   const oldHotelDetails = hotelConditions.closest('details');
   hotelConditions.className = 'pane lodging-grid';
@@ -105,16 +108,16 @@
     document.querySelector('header .intro').innerHTML = '<strong>移動手段は新幹線に決定。往路・復路とも時刻は任意ですが、10/3は新潟駅を16:22まで、10/4は東京駅を17:32までに出発します。</strong>どちらも早い便を選んで構いません。都内は電車と徒歩で移動します。';
     const notice = document.querySelector('header .notice');
     notice.innerHTML = '<strong>新幹線案：選択済み／予約状況：未確認</strong><br><span id="hotelwarning"></span>';
-    $('hotelwarning').textContent = '宿は候補段階で、1室'+yen(a.hotel_room_total_jpy,1)+'の仮予算です。乗車券・宿・夕食店の予約成立は確認できていません。';
+    $('hotelwarning').textContent = '宿は未決定です。Minn 西葛西を起点に、宿泊'+yen(a.hotel_room_total_jpy,1)+'／3人で試算しています。乗車券・宿・夕食店は予約成立未確認です。';
     summary.innerHTML = `<h2 id="selected-heading">決定したプラン：新幹線</h2><div class="selected-grid"><div class="pane"><span class="pill">移動手段は選択済み</span><h3>交通・1泊・10/3夕食の予算</h3><div class="selected-price">約${yen(total)}<small>／人</small></div><p class="note">${n}人合計 約${yen(total*n)}。通常期eチケットの参考額で仮計算。</p><ul class="selected-costs"><li><span>新幹線往復（通常期の参考額）</span><strong>${yen(cost.train,1)}</strong></li><li><span>都内交通（仮予算）</span><strong>${yen(cost.local,1)}</strong></li><li><span>宿泊（仮予算・${n}人割り）</span><strong>${yen(cost.hotel,1)}</strong></li><li><span>10/3夕食（仮置き）</span><strong>${yen(meal,1)}</strong></li></ul><p class="selected-fare-note">片道10,780円は通常期の参考額で、10/3・10/4の実売額・座席は未確認です。<a href="${e(data.sources.find(s=>s.id==='rail_fare').url)}" target="_blank" rel="noopener noreferrer">えきねっとの価格例</a></p><p class="note">入場券・その他の食費・買い物・新潟駅までの個別移動は別です。</p></div><div class="pane"><h3>次に確定すること</h3><ol class="selected-todo"><li>10/3は16:22までに新潟駅を出る便、10/4は17:32までに東京駅を出る便から選び、3人分の座席・支払総額を確認する。</li><li>10/3の宿を大人3人・1泊で確保する。現在の宿は候補のまま。</li><li>10/3の夕食店を決める。${yen(meal,1)}／人は仮置きで、実際の上限・注文額は店を決める際に調整する。</li></ol><p><a href="#lodging">宿泊候補を見る</a> ／ <a href="#dinner">夕食候補を見る</a></p></div></div>`;
     document.querySelector('#detail h2').textContent = '新幹線プランの行程（時刻は購入前の候補）';
     $('itineraries').innerHTML = `<p class="note"><strong>往路・復路とも出発時刻は任意です。</strong>10/3は遅くとも16:22までに新潟駅を出発、10/4は遅くとも17:32までに東京駅を出発します。16:22発「とき76号」と17:32発「とき335号」は固定便ではなく、それぞれのボーダーラインです。より早い便を選んで構いません。購入時に運転日・時刻・乗り継ぎ・座席を確認してください。</p><div class="pane steps">${p.schedule.map(s=>`<div class="step"><time>${e(s.date.slice(5).replace('-','/'))}<br>${e(s.time)}</time><div>${e(s.action)}<small>${s.source_id?(s.source_id.startsWith('train_')?'出発期限の基準便・予約未確認 · ':e(s.status)+' · ')+sourceLink(s.source_id):'計画上の目安'}</small></div></div>`).join('')}</div>`;
     const hotel = data.lodging;
     const hotelName = a.hotel_name.replace(/（.*?）/g, '');
     const hotelQuery = hotelName + ' ' + a.hotel_location;
-    const stationWalk = 'https://www.google.com/maps/dir/?' + new URLSearchParams({api:'1',origin:'西葛西駅南口 東京都江戸川区',destination:hotelQuery,travelmode:'walking'});
-    $('hotelconditions').innerHTML = `<div><span class="pill">${e(hotel.status)}</span><h3>${e(hotelName)}</h3><p class="note">${e(a.hotel_location)}<br>${e(hotel.access)} ${sourceLink('hotel')}</p><p><strong>宿泊の仮予算 ${yen(a.hotel_room_total_jpy,1)}／室</strong><br>大人${n}人で1泊・1人${yen(cost.hotel,1)}。10/3チェックイン、10/4チェックアウト。</p><ul class="lodging-facts"><li>${e(hotel.room)} <a href="${e(hotel.room_url)}" target="_blank" rel="noopener noreferrer">客室の公式案内</a></li><li>チェックイン ${e(hotel.check_in)}／チェックアウト ${e(hotel.check_out)}</li><li>${e(hotel.breakfast)}。翌朝は07:45ごろに宿を出る計画です。 <a href="${e(hotel.facilities_url)}" target="_blank" rel="noopener noreferrer">朝食の公式案内</a></li></ul><p class="note">10/3・大人3人1室の販売価格・空室・予約成立は未確認です。予約前に3人分の総額と寝具構成を確認してください。</p><div class="dinner-links"><a href="${e(hotel.booking_url)}" target="_blank" rel="noopener noreferrer">公式サイトで空室・料金を確認 ↗</a><a href="${e(stationWalk)}" target="_blank" rel="noopener noreferrer">西葛西駅 → 宿（徒歩） ↗</a><a href="#edit">宿泊予算を変更</a></div></div><div class="lodging-next"><h3>この宿から夕食へ</h3><p>宿にチェックインしたら、徒歩で夕食へ。下の4店は西葛西の候補です。</p><p class="note">各店の「宿 → 店（徒歩）」は、このホテルが出発点です。宿を変える場合は、夕食店の場所と徒歩経路も見直します。</p><div class="dinner-links">${data.dinner.candidates.map(r=>`<a href="#dinner-${e(r.id)}">${e(r.short_name)}</a>`).join('')}</div><p><a href="#dinner">夕食候補の料理・予算を見る ↓</a></p></div>`;
-    document.querySelector('#dinner > p').innerHTML = `<strong>${e(hotelName)}を起点に選ぶ、西葛西の夕食候補4店。</strong><br><span class="note">夕食${yen(meal,1)}／人は仮置きです。店・注文内容・実際の支払額は未確定です。 <a href="#lodging">起点の宿泊候補を見る</a></span>`;
+    const stationWalk = 'https://www.google.com/maps/dir/?' + new URLSearchParams({api:'1',origin:'西葛西駅北口 東京都江戸川区',destination:hotelQuery,travelmode:'walking'});
+    $('hotelconditions').innerHTML = `<div><span class="pill">${e(hotel.status)}</span><h3>${e(hotelName)}</h3><p class="note">${e(a.hotel_location)}<br>${e(hotel.access)} ${sourceLink('hotel')}</p><p><strong>販売確認額 ${yen(hotel.quoted_total_jpy,1)}／3人・1室</strong><br>1人${yen(hotel.quoted_per_person_jpy,1)}。10/3チェックイン、10/4チェックアウト。税込・サービス料込。</p><p class="note">9/27 23:54確認：指定日・大人3人1室で販売中。空室・料金は変わります。未予約です。ポイント還元は金額から差し引いていません。</p><p class="notice"><strong>${e(hotel.cancellation)}</strong><br>予約前に最終総額・取消条件を確認してください。</p><ul class="lodging-facts"><li>${e(hotel.room)} <a href="${e(hotel.room_url)}" target="_blank" rel="noopener noreferrer">客室・プラン詳細</a></li><li>チェックイン ${e(hotel.check_in)}／チェックアウト ${e(hotel.check_out)}</li><li>${e(hotel.breakfast)}。翌朝は07:45ごろに宿を出る計画です。</li><li>歯ブラシ・部屋着は持参してください。</li></ul><p class="note">画面の宿泊予算：${yen(a.hotel_room_total_jpy,1)}／3人（1人${yen(cost.hotel,1)}）。予算の入力を変えても、販売確認額は変わりません。</p><div class="dinner-links"><a href="${e(hotel.booking_url)}" target="_blank" rel="noopener noreferrer">じゃらんで10/3・3人の空室を見る ↗</a><a href="${e(stationWalk)}" target="_blank" rel="noopener noreferrer">西葛西駅 → 宿（徒歩） ↗</a><a href="#edit">宿泊予算を変更</a></div><details><summary>もう1つの候補：Minn 葛西（3人28,800円）</summary><p>${e(hotel.alternative.room)}。同じ日程・3人1室で1人${yen(hotel.alternative.per_person_jpy,1)}、税込・サービス料込。9/27販売確認、未予約。こちらも予約時からキャンセル料100%・オンラインカード決済です。</p><p>葛西駅から徒歩約3分。今の夕食候補へは東西線で西葛西まで1駅移動します。選ぶ場合は、宿・夕食・翌朝の経路を更新します。</p><a href="${e(hotel.alternative.booking_url)}" target="_blank" rel="noopener noreferrer">Minn 葛西の10/3・3人の空室を見る ↗</a></details></div><div class="lodging-next"><h3>この宿から夕食へ</h3><p>比較のため、Minn 西葛西を起点にしています。チェックイン後は、下の4店へ徒歩で向かう計画です。</p><p class="note">宿はまだ決定していません。各店の「宿 → 店（徒歩）」と経路マップはMinn 西葛西が起点です。別の宿を選ぶ場合は経路も更新します。</p><div class="dinner-links">${data.dinner.candidates.map(r=>`<a href="#dinner-${e(r.id)}">${e(r.short_name)}</a>`).join('')}</div><p><a href="#dinner">夕食候補の料理・予算を見る ↓</a></p></div>`;
+    document.querySelector('#dinner > p').innerHTML = `<strong>${e(hotelName)}を仮の起点にした、西葛西の夕食候補4店。</strong><br><span class="note">夕食${yen(meal,1)}／人は仮置きです。店・注文内容・実際の支払額は未確定です。 <a href="#lodging">起点の宿泊候補を見る</a></span>`;
     document.querySelector('#edit h2').textContent = '新幹線案の宿・都内交通予算を変更';
     const dinnerBudget = $('dinner-totals');
     if (dinnerBudget) {
